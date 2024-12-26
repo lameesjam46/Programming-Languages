@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class Store extends Model
 {
     use HasFactory, Notifiable;
+    protected $guarded=[];
     public function product(){
         return $this->hasMany(Product::class);
     }

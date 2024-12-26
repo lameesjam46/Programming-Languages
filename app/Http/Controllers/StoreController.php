@@ -7,19 +7,21 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\product_color_size;
 use App\Models\Store;
+use App\Traits\UplodeImageTrait;
 use Illuminate\Http\Request;
 
 
 class StoreController extends Controller
 {
+
     public function getAllStore(){
       $stores = Store::query()->get()->all();
-      return response()->json(['msg'=>'successfully','data'=>$stores]);
+      return response()->json(['msg'=>'successfully','data'=>$stores,'status'=>200]);
     }
 
     public function getAllProducts($id){
         $products=Product::query()->where('store_id','=',$id)->get();
-        return response()->json(['msg'=>'successfully','data'=>$products]);
+        return response()->json(['msg'=>'successfully','data'=>$products,'status'=>200]);
     }
 
 
@@ -41,17 +43,17 @@ class StoreController extends Controller
 //        $products=product_color_size::query()->select('product_id','color_id','size_id')
 //            ->with(['product:id,name,price,description,image,store_id','color:id,nameColor','size:id,size',
 //                'product.store:id,name'])->find($product[$id]);
-        return response()->json(['msg'=>'successfully','data'=>$product]);
+        return response()->json(['msg'=>'successfully','data'=>$product,'status'=>200]);
     }
 
    public function addToCart(Request $request){
-        product_color_size::query()->create([
-            'productToCart'=>$request->id,
+        cart::query()->create([
+            'product_color_size_id'=>$request->product_color_size_id,
             'user_id'=>$request->user_id
         ]);
 
 
-
+       return response()->json(['msg'=>'successfully','status'=>200]);
 //        $request->validate([
 //            'product_id'=>'required',
 //            'color_id'=>'required',
@@ -132,7 +134,7 @@ class StoreController extends Controller
 //       $pr=$pr+$mm->price;
 
 
-        return response()->json(['msg'=>'get','data'=>$cart]);
+        return response()->json(['msg'=>'get','data'=>$cart,'status'=>200]);
 
    }
 

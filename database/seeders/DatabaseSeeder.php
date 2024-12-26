@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
             SizeSeeder::class
         ]);
         // User::factory(10)->create();
-            Store::factory(10)->create();
-        Product::factory(10)->create();
+//            Store::factory(10)->create();
+//        Product::factory(10)->create();
 //        User::factory()->create([
 //            'name' => 'Test User',
 //            'email' => 'test@example.com',
