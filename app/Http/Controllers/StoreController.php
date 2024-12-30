@@ -139,21 +139,63 @@ class StoreController extends Controller
    }
 
     //cancel order
-    public function cancelOrder($id){
-        $cancel=cart::query()->where('user_id','=',$id)->delete();
-        return response()->json(['msg'=>'cancel order OK']);
+    public function cancelOrder($user_id){
+//        $quantity=[];
+        $ll= cart::query()->where('user_id','=',$user_id)->get();
+
+
+        foreach ($ll as $item){
+            $ii[]=$item->product_color_size_id;
+        }
+        foreach ($ii as $product_color_size_id){
+             $prod=product_color_size::query()->where('id','=',$product_color_size_id)->get();
+            foreach ($prod as $rr ){
+                $tt=$rr->quantity;
+                $quantity=$tt+1;
+                $rr->quantity=$quantity;
+                $rr->save();
+            }
+
+        }
+            $cancel=cart::query()->where('user_id','=',$user_id)->delete();
+            return response()->json(['msg'=>'cancel order OK','data'=>$quantity,'status'=>200]);
+
+
+
     }
     //install order
-    public function installOrder($product_color_size_id){
-        Order::query()->create([
-            'cartToOrder'=>$product_color_size_id
+    public function installOrder($user_id){
+        $ii=[];
+        $ll= cart::query()->where('user_id','=',$user_id)->get();
+
+        foreach ($ll as $item){
+            $ii[]=$item->product_color_size_id;
+        }
+        foreach ($ii as $product_color_size_id){
+
+            Order::query()->create([
+                'cartToOrder'=>$product_color_size_id,
+                'user_id'=>$user_id
         ]);
+        }
+        return response()->json(['msg'=>'successfully','status'=>200]);
 
     }
     //update order
-    public function updateOrder($id){
+    public function updateOrder($product_color_size_id){
 
-        cart::query()->where('product_color_size_id','=',$id)->delete();
+        cart::query()->where('product_color_size_id','=',$product_color_size_id)->delete();
+        return response()->json(['msg'=> 'successfully','status'=>200]);
     }
 
+
+    public function getAllOrder($user_id){
+
+        $Order=Order::query()->where('user_id','=',$user_id)->select('id','product_color_size_id','created_at','updated_at')
+            ->with(['product_color_size:id,product_id,color_id,size_id,price','product_color_size.product:id,name,image,description,store_id','product_color_size.color:id,nameColor','product_color_size.size:id,size','product_color_size.product.store:id,name'])
+            ->get();
+
+
+            return response()->json(['msg'=>'successfully','data'=>$Order,'status'=>200]);
+    }
 }

@@ -13,9 +13,12 @@ Route::get('getStores',[StoreController::class,'getAllStore']);
 Route::get('getAllProducts/{id}',[StoreController::class,'getAllProducts']);
 Route::get('getOneProduct/{id}',[StoreController::class,'getOneProduct']);
 Route::post('addToCart',[StoreController::class,'addToCart']);
-//Route::get('getCart/{id}',[StoreController::class,'getcart']);
 Route::get('cancelOrder/{id}',[StoreController::class,'cancelOrder']);
 Route::get('getCart/{id}',[StoreController::class,'getCart2']);
+Route::get('installOrder/{id}',[StoreController::class,'installOrder']);
+Route::get('cancelOrder/{id}',[StoreController::class,'cancelOrder']);
+Route::get('getAllOrder/{id}',[StoreController::class,'getAllOrder']);
+
 
 Route::post('insertStore',[insertdbcontroller::class,'storeImageSrore']);
 Route::post('insertProducts',[insertdbcontroller::class,'insertProducts']);
